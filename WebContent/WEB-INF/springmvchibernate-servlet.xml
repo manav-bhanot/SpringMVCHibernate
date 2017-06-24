@@ -1,0 +1,36 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+         http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-4.0.xsd
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+         http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+         
+	<!-- This tag allows Spring to load all the components from package edu.csulb.springproject.controller 
+		and all it child packages. This loads our HelloWorld Class -->
+	<context:component-scan base-package="edu.csulb"></context:component-scan>
+
+	<!-- We have defined a bean with id = "viewResolver". This bean will basically 
+		resolve the view and add prefix string /WEB-INF/jsp and suffix .jsp to the 
+		view in ModelAndView. In our HelloWorld Class, we return a ModelAndView object 
+		with view name "welcome". This will be resolved to "/WEB-INF/jsp/welcome.jsp" 
+		with the help of this view resolver -->
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
+		<property name="suffix" value=".jsp"></property>
+
+	</bean>
+
+
+</beans>
