@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!-- <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
@@ -8,11 +8,11 @@
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-	<!-- <util:properties id="nodeProperty"
+	<util:properties id="nodeProperty"
 		location="classpath:config/config.properties" />
 		
 	<context:property-placeholder
-		properties-ref="nodeProperty" /> -->
+		properties-ref="nodeProperty" />
 		
 	<context:component-scan base-package="edu.csulb.springproject.controller" />
-</beans>
+</beans> -->

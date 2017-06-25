@@ -3,10 +3,12 @@
  */
 package edu.csulb.library.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import edu.csulb.library.dao.impl.BookDaoImpl;
+import edu.csulb.library.dao.BookDao;
 import edu.csulb.library.entity.Book;
+import edu.csulb.library.model.BookTO;
 
 /**
  * @author Manav
@@ -14,55 +16,59 @@ import edu.csulb.library.entity.Book;
  */
 public class BookService {
 	
-	private static BookDaoImpl bookDao;
+	private BookDao<Book> bookDao;
 	
 	public BookService() {
-		bookDao = new BookDaoImpl();
 	}
 
-	public void save(Book book) {
-		bookDao.openCurrentSessionWithTransaction();
+	public BookService(BookDao<Book> bookDao) {
+		this.bookDao = bookDao;
+	}
+
+	public long save(BookTO bookTO) {
+
+		Book book = bookTO.copyTransferObjectToEntity();
+
 		bookDao.persist(book);
-		bookDao.closeCurrentSessionWithTranscation();
+		return book.getId();
 	}
 
-	public void update(Book book) {
-		bookDao.openCurrentSessionWithTransaction();
+	public void update(BookTO bookTO) {
+
+		Book book = bookTO.copyTransferObjectToEntity();
 		bookDao.update(book);
-		bookDao.closeCurrentSessionWithTranscation();
 	}
 
-	public List<Book> getAllBooks() {
-		bookDao.openCurrentSession();
-		List<Book> allBooks = bookDao.findAllBooks();
-		bookDao.closeCurrentSession();
+	public List<BookTO> getAllBooks() {
 
-		return allBooks;
+		List<BookTO> listOfBooks = new ArrayList<BookTO>();
+
+		for (Book b : bookDao.findAllBooks()) {
+			BookTO bookTO = new BookTO();
+			bookTO.copyEntityToTransferObject(b);
+			listOfBooks.add(bookTO);
+		}
+
+		return listOfBooks;
 	}
 
-	public Book getBookById(String id) {
-		bookDao.openCurrentSession();
+	public BookTO getBookById(long id) {
+
 		Book book = bookDao.findById(id);
-		bookDao.closeCurrentSession();
 
-		return book;
+		BookTO bookTO = new BookTO();
+		bookTO.copyEntityToTransferObject(book);
+
+		return bookTO;
 	}
 
-	public void deleteBook(String id) {
-		bookDao.openCurrentSessionWithTransaction();
+	public void deleteBook(long id) {
 		Book book = bookDao.findById(id);
 		bookDao.deleteBook(book);
-		bookDao.closeCurrentSessionWithTranscation();
 	}
 
 	public void deleteAllBooks() {
-		bookDao.openCurrentSessionWithTransaction();
 		bookDao.deleteAllBooks();
-		bookDao.closeCurrentSessionWithTranscation();
-	}
-
-	public BookDaoImpl getBookDao() {
-		return bookDao;
 	}
 
 }

@@ -6,7 +6,8 @@ package edu.csulb.library.dao.impl;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.SessionFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.csulb.library.dao.BookDao;
 import edu.csulb.library.entity.Book;
@@ -16,16 +17,24 @@ import edu.csulb.library.util.HibernateUtil;
  * @author Manav
  *
  */
-public class BookDaoImpl implements BookDao<Book, String> {
+
+public class BookDaoImpl implements BookDao<Book> {
 
 	private Session session;
-	private Transaction tx;
+	// private Transaction tx;
+
+	private SessionFactory sessionFactory;
 
 	public BookDaoImpl() {
 	}
 
+	public BookDaoImpl(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
 	public void openCurrentSession() {
-		this.session = HibernateUtil.getSesionFactory().openSession();
+		// this.session = HibernateUtil.getSesionFactory().openSession();
+		this.session = this.sessionFactory.getCurrentSession();
 	}
 
 	public void closeCurrentSession() {
@@ -34,28 +43,33 @@ public class BookDaoImpl implements BookDao<Book, String> {
 
 	public void openCurrentSessionWithTransaction() {
 		this.session = HibernateUtil.getSesionFactory().openSession();
-		this.tx = this.session.beginTransaction();
+		// this.tx = this.session.beginTransaction();
 	}
 
 	public void closeCurrentSessionWithTranscation() {
-		this.tx.commit();
+		// this.tx.commit();
 		this.session.close();
 	}
 
 	@Override
+	@Transactional
 	public void persist(Book bookEntity) {
+		this.session = this.sessionFactory.getCurrentSession();
 		this.session.save(bookEntity);
 	}
 
 	@Override
+	@Transactional
 	public void update(Book bookEntity) {
+		this.session = this.sessionFactory.getCurrentSession();
 		session.update(bookEntity);
 	}
 
 	@Override
-	public Book findById(String id) {
+	public Book findById(long id) {
 		Book book = null;
 		try {
+			this.session = this.sessionFactory.getCurrentSession();
 			book = session.get(Book.class, id);
 		} finally {
 			// session.close();
@@ -65,8 +79,10 @@ public class BookDaoImpl implements BookDao<Book, String> {
 	}
 
 	@Override
+	@Transactional
 	public void deleteBook(Book bookEntity) {
 		try {
+			this.session = this.sessionFactory.getCurrentSession();
 			session.delete(bookEntity);
 		} finally {
 			// session.close();
@@ -75,11 +91,13 @@ public class BookDaoImpl implements BookDao<Book, String> {
 	
 	@SuppressWarnings("unchecked")
 	@Override
+	@Transactional
 	public List<Book> findAllBooks() {
 
 		List<Book> allBooks;
 		
 		try {
+			this.session = this.sessionFactory.getCurrentSession();
 			allBooks = session.createQuery("from Book").list();
 		} finally {
 			// session.close();
@@ -89,10 +107,13 @@ public class BookDaoImpl implements BookDao<Book, String> {
 	}
 	
 	@Override
+	@Transactional
 	public void deleteAllBooks() {
+		openCurrentSession();
 		for (Book b : findAllBooks()) {
 			deleteBook(b);
 		}
+		closeCurrentSession();
 	}
 
 
