@@ -30,12 +30,13 @@
 				<td><form:input path="publishingYear" id="publishingYear" /></td>
 			</tr>
 			<tr>
-				<td colspan="2"><c:choose>
+				<td colspan="2">
+					<c:choose>
 						<c:when test="${edit}">
-							<input type="submit" value="Update">
+							<input type="submit" name="action" value="Update">
 						</c:when>
 						<c:otherwise>
-							<input type="submit" value="Add">
+							<input type="submit" name="action" value="Add">
 						</c:otherwise>
 					</c:choose></td>
 			</tr>

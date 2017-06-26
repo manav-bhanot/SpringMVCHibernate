@@ -16,14 +16,27 @@
 			<td> <label for="title"> TITLE </label> </td>
 			<td> <label for="title"> AUTHOR </label> </td>
 			<td> <label for="title"> PUBLISHING YEAR </label> </td>
+			<td colspan="2"> <label for="title"> ACTION </label> </td>
 		</tr>
 		
-		<c:forEach items="${ listOfBooks }" var="books"> 
+		<c:forEach items="${ listOfBooks }" var="book"> 
 		
 			<tr>
-				<td> ${books.title} </td>
-				<td> ${books.author} </td>
-				<td> ${books.publishingYear} </td>
+				<td> ${book.title} </td>
+				<td> ${book.author} </td>
+				<td> ${book.publishingYear} </td>
+				<td> 
+					<form:form id="${ book.id }" action="edit" method="POST">
+						<input type="hidden" name="bookId" value="${ book.id }" />
+						<input type="submit" value="Edit"/>
+					</form:form>					
+				 </td>
+				 <td>
+				 	<form:form id="${ book.id }" action="delete" method="POST">
+				 		<input type="hidden" name="bookId" value="${ book.id }" />						
+						<input type="submit" value="Delete"/>
+					</form:form>
+				 </td>
 			</tr>
 			
 		</c:forEach>

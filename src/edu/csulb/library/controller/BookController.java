@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.csulb.library.model.BookTO;
@@ -41,25 +42,62 @@ public class BookController {
 
 	}
 
-	@RequestMapping("/addBook")
+	@RequestMapping(value = "/addBook", method = RequestMethod.GET)
 	public ModelAndView addNewBook() {
 		ModelAndView modelAndView = new ModelAndView("addBook", "book", new BookTO());
 		return modelAndView;
 	}
 
 	@RequestMapping(value = "/saveBook", method = RequestMethod.POST)
-	public ModelAndView saveBook(@ModelAttribute("book") BookTO bookTO, BindingResult res, ModelMap mMap) {
+	public ModelAndView saveBook(@ModelAttribute("book") BookTO bookTO, BindingResult res, ModelMap mMap,
+			@RequestParam String action) {
 
 		if (res.hasErrors()) {
 			// return "error";
 		}
 
-		bookService.save(bookTO);
+		String successMessage = "";
 
-		String successMessage = "Book with title : " + bookTO.getTitle() + " is successfully saved in the database";
+		if (action.equalsIgnoreCase("Add")) {
+			bookService.save(bookTO);
+			successMessage = "Book with title : " + bookTO.getTitle() + " is successfully saved in the database";
+		} else if (action.equalsIgnoreCase("Update")) {
+			bookService.update(bookTO);
+			successMessage = "Book with title : " + bookTO.getTitle() + " is successfully updated in the database";
+		}
 
 		ModelAndView modelAndView = new ModelAndView("success", "successMessage", successMessage);
 		return modelAndView;
 	}
+
+	@RequestMapping(value = "/edit", method = RequestMethod.POST)
+	public ModelAndView editBook(@RequestParam("bookId") String bookId, ModelMap mMap) {
+
+		Integer id = Integer.parseUnsignedInt(bookId);
+
+		BookTO bookTO = bookService.getBookById(id);
+
+		mMap.addAttribute("edit", true);
+		mMap.addAttribute("book", bookTO);
+
+		ModelAndView modelAndView = new ModelAndView("addBook", mMap);
+		return modelAndView;
+	}
+
+
+	/*
+	 * @RequestMapping(value = "/update", method = RequestMethod.POST) public
+	 * ModelAndView updateBook(@ModelAttribute("book") BookTO bookTO,
+	 * BindingResult res, ModelMap mMap) { if (res.hasErrors()) { // return
+	 * "error"; }
+	 * 
+	 * bookService.update(bookTO);
+	 * 
+	 * String successMessage = "Book with title : " + bookTO.getTitle() +
+	 * " is successfully updated in the database";
+	 * 
+	 * ModelAndView modelAndView = new ModelAndView("success", "successMessage",
+	 * successMessage); return modelAndView; }
+	 */
 
 }
