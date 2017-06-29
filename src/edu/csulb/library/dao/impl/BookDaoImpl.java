@@ -65,7 +65,7 @@ public class BookDaoImpl implements BookDao<Book> {
 			// session.close();
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Book> findAllBooks() {
