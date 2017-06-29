@@ -58,18 +58,21 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<!-- Commenting out the below configurations -->
+	<!-- Added BeanConfig file to instantiate the beans in the Spring Container -->
+	
 	<!-- Configuring BookDao and passing SessionFactory instance to it -->
-	<bean id="bookDao" class="edu.csulb.library.dao.impl.BookDaoImpl">
+	<!-- <bean id="bookDao" class="edu.csulb.library.dao.impl.BookDaoImpl">
 		<constructor-arg>
 			<ref bean="sessionFactory" />
 		</constructor-arg>
-	</bean>
+	</bean> -->
 	
 	<!-- Configuring the bean BookService -->
-	<bean id="bookService" class = "edu.csulb.library.service.BookService">
+	<!-- <bean id="bookService" class = "edu.csulb.library.service.BookService">
 		<constructor-arg>
 			<ref bean="bookDao" />
 		</constructor-arg>
-	</bean>
+	</bean> -->
 
 </beans>

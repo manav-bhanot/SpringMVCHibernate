@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.csulb.library.dao.BookDao;
@@ -22,6 +23,7 @@ public class BookDaoImpl implements BookDao<Book> {
 
 	private Session session;
 
+	@Autowired
 	private SessionFactory sessionFactory;
 
 	public BookDaoImpl() {

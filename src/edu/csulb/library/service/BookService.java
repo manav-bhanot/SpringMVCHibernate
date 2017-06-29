@@ -6,6 +6,8 @@ package edu.csulb.library.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import edu.csulb.library.dao.BookDao;
 import edu.csulb.library.entity.Book;
 import edu.csulb.library.model.BookTO;
@@ -16,13 +18,10 @@ import edu.csulb.library.model.BookTO;
  */
 public class BookService {
 	
+	@Autowired
 	private BookDao<Book> bookDao;
-	
-	public BookService() {
-	}
 
-	public BookService(BookDao<Book> bookDao) {
-		this.bookDao = bookDao;
+	public BookService() {
 	}
 
 	public long save(BookTO bookTO) {
