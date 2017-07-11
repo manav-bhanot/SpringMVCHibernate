@@ -29,10 +29,6 @@ public class BookDaoImpl implements BookDao<Book> {
 	public BookDaoImpl() {
 	}
 
-	public BookDaoImpl(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
-
 	@Override
 	public void persist(Book bookEntity) {
 		this.session = this.sessionFactory.getCurrentSession();
